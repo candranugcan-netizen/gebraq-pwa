@@ -1,0 +1,21 @@
+{
+    "name": "Gebraq - Berantas Buta Huruf Al-Qur'an",
+    "short_name": "Gebraq",
+    "start_url": "/",
+    "background_color": "#ffffff",
+    "theme_color": "#4f46e5",
+    "display": "standalone",
+    "orientation": "portrait",
+    "icons": [
+        {
+            "src": "/images/icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/images/icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}
