@@ -1,58 +1,42 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">Kelola Kategori Keuangan</h2>
+        <h2 class="font-bold text-lg text-slate-800 leading-tight">Kelola Kategori</h2>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            <!-- Form Tambah -->
-            <div class="p-6 bg-white shadow rounded-lg">
-                <form action="{{ route('kategori.store') }}" method="POST" class="space-y-4">
-                    @csrf
-
-                    @if ($errors->any())
-                        <div class="mb-4 text-sm text-red-600 bg-red-100 p-3 rounded w-full">
-                            <ul class="list-disc pl-5">
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
-
-                    <div class="flex gap-4">
-                        <input type="text" name="nama_kategori" placeholder="Nama Kategori Baru" class="border-gray-300 rounded-md w-full" required>
-                        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">Simpan</button>
+    <div class="py-4 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
+        <!-- Form Tambah -->
+        <div class="p-4 bg-white shadow-sm border border-slate-100 rounded-2xl">
+            <h3 class="text-sm font-bold text-slate-700 mb-3">Tambah Kategori Baru</h3>
+            <form action="{{ route('kategori.store') }}" method="POST" class="space-y-3">
+                @csrf
+                @if ($errors->any())
+                    <div class="text-xs text-red-600 bg-red-50 p-3 rounded-xl">
+                        @foreach ($errors->all() as $error) <p>{{ $error }}</p> @endforeach
                     </div>
-                </form>
-            </div>
+                @endif
+                <div class="flex gap-2">
+                    <input type="text" name="nama_kategori" placeholder="Misal: Operasional, Donasi" class="text-sm border-slate-200 rounded-xl w-full focus:ring-indigo-500 focus:border-indigo-500" required>
+                    <button type="submit" class="bg-indigo-600 text-white font-semibold text-sm px-4 py-2 rounded-xl hover:bg-indigo-700 active:scale-95 transition">Simpan</button>
+                </div>
+            </form>
+        </div>
 
-            <!-- Tabel Data -->
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
-                <table class="w-full text-left border-collapse">
-                    <thead>
-                        <tr class="border-b">
-                            <th class="p-2 w-16">No</th>
-                            <th class="p-2">Nama Kategori</th>
-                            <th class="p-2 w-24">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($kategori as $index => $item)
-                        <tr class="border-b">
-                            <td class="p-2">{{ $index + 1 }}</td>
-                            <td class="p-2">{{ $item->nama_kategori }}</td>
-                            <td class="p-2">
-                                <form action="{{ route('kategori.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus kategori ini? Data keuangan terkait mungkin akan ikut terhapus.')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button class="text-red-600 hover:underline">Hapus</button>
-                                </form>
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+        <!-- Daftar Kategori (Mobile Card Style) -->
+        <div class="bg-white border border-slate-100 rounded-2xl p-4 shadow-sm space-y-3">
+            <h3 class="text-sm font-bold text-slate-700 border-b border-slate-100 pb-2">Daftar Kategori</h3>
+            <div class="divide-y divide-slate-100">
+                @forelse($kategori as $item)
+                    <div class="py-3 flex justify-between items-center">
+                        <span class="text-sm font-medium text-slate-800">🏷️ {{ $item->nama_kategori }}</span>
+                        <form action="{{ route('kategori.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Hapus kategori ini?')">
+                            @csrf
+                            @method('DELETE')
+                            <button class="text-xs text-red-500 hover:text-red-700 font-semibold bg-red-50 px-2.5 py-1 rounded-lg">Hapus</button>
+                        </form>
+                    </div>
+                @empty
+                    <p class="text-xs text-slate-400 py-2 text-center">Belum ada kategori disetup.</p>
+                @endforelse
             </div>
         </div>
     </div>
