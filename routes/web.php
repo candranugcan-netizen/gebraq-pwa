@@ -6,6 +6,7 @@ use App\Http\Controllers\KegiatanController;
 use App\Http\Controllers\LandingController;
 use App\Models\Keuangan;
 use App\Models\Kegiatan;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [LandingController::class, 'index'])->name('landing');
@@ -34,6 +35,18 @@ Route::middleware('auth')->group(function () {
     Route::resource('kategori', KategoriKeuanganController::class)->only(['index', 'store', 'destroy']);
     Route::resource('keuangan', KeuanganController::class)->only(['index', 'store', 'destroy']);
     Route::resource('kegiatan', KegiatanController::class)->only(['index', 'store', 'destroy']);
+});
+
+Route::get('/migrasi-aman-12345', function () {
+    try {
+        // Menjalankan migrasi
+        Artisan::call('migrate', ['--force' => true]);
+
+        // Menampilkan output ke layar
+        return Artisan::output();
+    } catch (\Exception $e) {
+        return $e->getMessage();
+    }
 });
 
 require __DIR__.'/auth.php';
