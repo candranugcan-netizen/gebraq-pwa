@@ -11,7 +11,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        // Jika ada variabel PUBLIC_PATH di file .env, gunakan jalur tersebut
+        if (env('PUBLIC_PATH')) {
+            $this->app->usePublicPath(base_path(env('PUBLIC_PATH')));
+        }
     }
 
     /**
